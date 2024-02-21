@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 20:28:01 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 19:24:16 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 19:27:23 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,22 @@ int	philo_eat(t_philo *philo)
 
 int	philo_sleep_think(t_philo *philo)
 {
-	if (philo_death(philo) == 0)
+	pthread_mutex_lock(&philo->data->death_lock);
+	if (philo->data->death == 0)
+	{
+		pthread_mutex_unlock(&philo->data->death_lock);
 		return (0);
+	}
+	pthread_mutex_unlock(&philo->data->death_lock);
 	ft_print_philo(philo, "is sleeping");
 	ft_sleep(philo->data->time_to_sleep);
-	if (philo_death(philo) == 0)
+	pthread_mutex_lock(&philo->data->death_lock);
+	if (philo->data->death == 0)
+	{
+		pthread_mutex_unlock(&philo->data->death_lock);
 		return (0);
+	}
+	pthread_mutex_unlock(&philo->data->death_lock);
 	ft_print_philo(philo, "is thinking");
 	return (1);
 }
