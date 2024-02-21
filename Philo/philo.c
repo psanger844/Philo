@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 15:49:59 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 18:25:29 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 18:51:43 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,13 @@ void	check_time(t_data *data)
 	i = 0;
 	while (1)
 	{
+		pthread_mutex_lock(&data->death_lock);
 		if (data->death == 0)
+		{
+			pthread_mutex_unlock(&data->death_lock);
 			return ;
+		}
+		pthread_mutex_unlock(&data->death_lock);
 		if (i >= data->number_of_philos)
 			i = 0;
 		pthread_mutex_lock(&data->time_last_meal_lock);
