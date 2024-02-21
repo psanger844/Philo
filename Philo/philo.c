@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 15:49:59 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/13 20:45:28 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 01:18:58 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,53 +14,110 @@
 
 void	create_philos(t_data *data)
 {
-	int i;
-	pthread_t *threads;
+	int	i;
 
 	i = 0;
-	threads = malloc(sizeof(pthread_t) * data->number_of_philos);
 	while (i < data->number_of_philos)
 	{
-		if (pthread_create(&threads[i], NULL, &routine, &data->philo[i]) != 0)
+		if (pthread_create(&data->threads[i], NULL, &routine,
+				&data->philo[i]) != 0)
 		{
 			printf("Problem with creating thread %d\n", i);
+			mid_free(data);
 			exit(1);
 		}
 		i++;
 	}
+}
+
+void	check_time(t_data *data)
+{
+	int	i;
+
 	i = 0;
 	while (i < data->number_of_philos)
 	{
-		if (pthread_join(threads[i], NULL) != 0)
+		data->philo[i].og_time = get_curr_time();
+		i++;
+	}
+	i = 0;
+	while (1)
+	{
+		if (data->death == 0)
+			return ;
+		if (i >= data->number_of_philos)
+			i = 0;
+		if (get_curr_time()
+			- data->philo[i].time_last_meal >= data->time_to_die)
+		{
+			printf("%lu %d died\n", get_time(data->philo[i].og_time), i);
+			data->death = 0;
+		}
+		i++;
+		usleep(200);
+	}
+}
+
+void	join_philos(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->number_of_philos)
+	{
+		if (pthread_join(data->threads[i], NULL) != 0)
 		{
 			printf("Problem with waiting for thread %d\n", i);
+			mid_free(data);
 			exit(1);
 		}
 		i++;
 	}
-	free(threads);
 }
 
-int main(int argc, char **argv)
+void	philo(t_data *data)
 {
+	int	i;
+
+	i = 0;
+	data->threads = malloc(sizeof(pthread_t) * data->number_of_philos);
+	if (data->threads == NULL)
+		mid_free(data);
+	if (data->number_of_philos <= 1)
+	{
+		data->philo->og_time = get_curr_time();
+		ft_print_philo(data->philo, "has taken a fork");
+		ft_sleep(data->time_to_die);
+		ft_print_philo(data->philo, "has died");
+		return ;
+	}
+	create_philos(data);
+	check_time(data);
+	join_philos(data);
+	free(data->threads);
+}
+
+int	main(int argc, char **argv)
+{
+	t_data	*data;
+
 	if (argc != 5 && argc != 6)
 	{
-		printf ("Wrong number of arguments!\n");
+		printf("Wrong number of arguments!\n");
 		return (1);
 	}
 	if (args_checker(argc, argv) == 1)
 	{
-		printf ("there are wrong chars in the arguments\n");
+		printf("there are wrong chars in the arguments\n");
 		return (1);
 	}
-	t_data *data;
 	data = malloc(sizeof(t_data));
+	if (data == NULL)
+		return (1);
 	init_data(argc, argv, data);
 	init_philo(data);
-
-	create_philos(data);
-
-	free(data->philo);
+	philo(data);
+	final_free(data);
 	free(data);
 	return (0);
 }

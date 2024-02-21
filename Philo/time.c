@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 15:26:53 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/14 15:54:04 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 00:57:30 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ unsigned long	get_og_time(void)
 	return (og_time);
 }
 
-unsigned long	get_curr_time()
+unsigned long	get_curr_time(void)
 {
 	struct timeval	curr;
 	unsigned long	time;

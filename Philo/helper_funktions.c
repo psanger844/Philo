@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 16:50:32 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/05 17:03:46 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 01:02:43 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ int	ft_atoi(const char *str)
 	i = 0;
 	num = 0;
 	minus = 1;
-	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\r'
-		|| str[i] == '\f' || str[i] == '\n' || str[i] == '\v')
+	while (str[i] == ' ' || str[i] == '\t'
+		|| str[i] == '\r' || str[i] == '\f'
+		|| str[i] == '\n' || str[i] == '\v')
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{
@@ -37,6 +38,7 @@ int	ft_atoi(const char *str)
 	}
 	return (num * minus);
 }
+
 int	args_checker(int argc, char **argv)
 {
 	int	i;
@@ -49,7 +51,7 @@ int	args_checker(int argc, char **argv)
 		while (argv[i][j] != '\0')
 		{
 			if (argv[i][j] < '0' || argv[i][j] > '9')
-				return(1);
+				return (1);
 			j++;
 		}
 		j = 0;
