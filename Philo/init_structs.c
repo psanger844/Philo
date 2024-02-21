@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:50:45 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 01:31:51 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 18:12:58 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	init_data(int argc, char **argv, t_data *data)
 	data->og_time = get_og_time();
 	data->death = 1;
 	data->meals = 0;
+	pthread_mutex_init(&data->time_last_meal_lock, NULL);
 	pthread_mutex_init(&data->meals_lock, NULL);
 	pthread_mutex_init(&data->death_lock, NULL);
 	pthread_mutex_init(&data->print, NULL);

@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 15:49:59 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 01:18:58 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 18:16:38 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,14 @@ void	check_time(t_data *data)
 			return ;
 		if (i >= data->number_of_philos)
 			i = 0;
+		pthread_mutex_lock(&data->time_last_meal_lock);
 		if (get_curr_time()
 			- data->philo[i].time_last_meal >= data->time_to_die)
 		{
 			printf("%lu %d died\n", get_time(data->philo[i].og_time), i);
 			data->death = 0;
 		}
+		pthread_mutex_unlock(&data->time_last_meal_lock);
 		i++;
 		usleep(200);
 	}
