@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 20:28:01 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 19:00:39 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 19:22:16 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ int	ft_print_philo(t_philo *philo, char *str)
 		return (0);
 	}
 	pthread_mutex_lock(&philo->data->print);
+	pthread_mutex_lock(&philo->og_time);
 	if (philo->data->death == 1)
 		printf("%lu %d %s\n", get_time(philo->og_time), philo->id, str);
+	pthread_mutex_unlock(&philo->og_time);
 	pthread_mutex_unlock(&philo->data->print);
 	pthread_mutex_unlock(&philo->data->death_lock);
 	return (1);
