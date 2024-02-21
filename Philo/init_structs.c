@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:50:45 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 19:00:02 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 20:47:04 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	init_data(int argc, char **argv, t_data *data)
 	data->og_time = get_og_time();
 	data->death = 1;
 	data->meals = 0;
-	pthread_mutex_init(&data->og_time_lock, NULL);
 	pthread_mutex_init(&data->time_last_meal_lock, NULL);
 	pthread_mutex_init(&data->meals_lock, NULL);
 	pthread_mutex_init(&data->death_lock, NULL);
@@ -41,9 +40,7 @@ void	init_data(int argc, char **argv, t_data *data)
 void	init_philo(t_data *data)
 {
 	int		i;
-	int		og_time;
 
-	og_time = get_og_time();
 	data->fork = malloc(sizeof(pthread_mutex_t) * data->number_of_philos);
 	if (data->fork == NULL)
 		mid_free(data);
@@ -59,7 +56,7 @@ void	init_philo(t_data *data)
 		data->philo[i].time_last_meal = get_curr_time();
 		data->philo[i].data = data;
 		data->philo[i].id = i;
-		data->philo[i].og_time = og_time;
+		data->philo[i].og_time = get_og_time();
 		data->philo[i].left_fork = &data->fork[i];
 		data->philo[i].right_fork = &data->fork[(i + 1)
 			% data->number_of_philos];

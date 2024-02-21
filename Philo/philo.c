@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 15:49:59 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 19:01:01 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 21:21:58 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,24 @@ void	create_philos(t_data *data)
 	}
 }
 
+void	check_time_pt2(t_data *data, int i)
+{
+	pthread_mutex_lock(&data->time_last_meal_lock);
+	if (get_curr_time()
+		- data->philo[i].time_last_meal >= (unsigned long)data->time_to_die)
+	{
+		printf("%lu %d died\n", get_time(data->philo[i].og_time), i);
+		pthread_mutex_lock(&data->death_lock);
+		data->death = 0;
+		pthread_mutex_unlock(&data->death_lock);
+	}
+	pthread_mutex_unlock(&data->time_last_meal_lock);
+}
+
 void	check_time(t_data *data)
 {
 	int	i;
 
-	i = 0;
-	while (i < data->number_of_philos)
-	{
-		pthread_mutex_lock(&data->og_time_lock);
-		data->philo[i].og_time = get_curr_time();
-		pthread_mutex_unlock(&data->og_time_lock);
-		i++;
-	}
 	i = 0;
 	while (1)
 	{
@@ -54,18 +60,9 @@ void	check_time(t_data *data)
 		pthread_mutex_unlock(&data->death_lock);
 		if (i >= data->number_of_philos)
 			i = 0;
-		pthread_mutex_lock(&data->time_last_meal_lock);
-		if (get_curr_time()
-			- data->philo[i].time_last_meal >= data->time_to_die)
-		{
-			printf("%lu %d died\n", get_time(data->philo[i].og_time), i);
-			pthread_mutex_lock(&data->death_lock);
-			data->death = 0;
-			pthread_mutex_unlock(&data->death_lock);
-		}
-		pthread_mutex_unlock(&data->time_last_meal_lock);
+		check_time_pt2(data, i);
 		i++;
-		usleep(200);
+		usleep(100);
 	}
 }
 
@@ -102,33 +99,11 @@ void	philo(t_data *data)
 		ft_print_philo(data->philo, "has died");
 		return ;
 	}
+	i = -1;
+	while (++i < data->number_of_philos)
+		data->philo[i].og_time = get_curr_time();
 	create_philos(data);
 	check_time(data);
 	join_philos(data);
 	free(data->threads);
-}
-
-int	main(int argc, char **argv)
-{
-	t_data	*data;
-
-	if (argc != 5 && argc != 6)
-	{
-		printf("Wrong number of arguments!\n");
-		return (1);
-	}
-	if (args_checker(argc, argv) == 1)
-	{
-		printf("there are wrong chars in the arguments\n");
-		return (1);
-	}
-	data = malloc(sizeof(t_data));
-	if (data == NULL)
-		return (1);
-	init_data(argc, argv, data);
-	init_philo(data);
-	philo(data);
-	final_free(data);
-	free(data);
-	return (0);
 }

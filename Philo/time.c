@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 15:26:53 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 00:57:30 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 20:16:27 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,15 @@ void	ft_sleep(int time_to_wait)
 	struct timeval	curr;
 	unsigned long	time_new;
 
+	time = 0;
 	if (gettimeofday(&curr, NULL) == 0)
 		time = curr.tv_sec * 1000 + curr.tv_usec / 1000;
 	while (1)
 	{
-		usleep(100);
+		usleep(200);
 		if (gettimeofday(&curr, NULL) == 0)
 			time_new = curr.tv_sec * 1000 + curr.tv_usec / 1000;
-		if (time_new - time >= time_to_wait)
+		if (time_new - time >= (unsigned long)time_to_wait)
 			break ;
 	}
 }

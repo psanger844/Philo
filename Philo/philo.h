@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 15:50:41 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 18:58:12 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 21:21:42 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct s_data
 	int				death;
 	int				meals;
 	pthread_mutex_t	time_last_meal_lock;
-	pthread_mutex_t	og_time_lock;
 	pthread_mutex_t	print;
 	pthread_mutex_t	meals_lock;
 	pthread_mutex_t	death_lock;
@@ -74,9 +73,9 @@ int					philo_eat(t_philo *philo);
 int					philo_sleep(t_philo *philo);
 int					philo_think(t_philo *philo);
 
-// death check
+// philo
 
-int					philo_death(t_philo *philo);
+void				philo(t_data *data);
 
 // printf
 

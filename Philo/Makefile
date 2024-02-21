@@ -1,7 +1,7 @@
 NAME = philo
 CC = cc
-CFLAGS = -pthread
-SRCS = philo.c helper_funktions.c init_structs.c time.c routine.c free_funktions.c
+CFLAGS = -Wall -Wextra -Werror -o3
+SRCS = main.c philo.c helper_funktions.c init_structs.c time.c routine.c free_funktions.c
 
 OBJS = $(SRCS:.c=.o)
 
