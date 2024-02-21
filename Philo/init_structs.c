@@ -6,13 +6,13 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:50:45 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 20:47:04 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 21:54:26 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	init_data(int argc, char **argv, t_data *data)
+int	init_data(int argc, char **argv, t_data *data)
 {
 	t_philo	*philo;
 
@@ -33,17 +33,21 @@ void	init_data(int argc, char **argv, t_data *data)
 		data->number_of_meals = 0;
 	philo = malloc(sizeof(t_philo) * data->number_of_philos);
 	if (philo == NULL)
+	{
 		mid_free(data);
+		return (0);
+	}
 	data->philo = philo;
+	return (1);
 }
 
-void	init_philo(t_data *data)
+int	init_philo(t_data *data)
 {
 	int		i;
 
 	data->fork = malloc(sizeof(pthread_mutex_t) * data->number_of_philos);
 	if (data->fork == NULL)
-		mid_free(data);
+		return (mid_free(data));
 	i = 0;
 	while (i < data->number_of_philos)
 	{
@@ -62,4 +66,5 @@ void	init_philo(t_data *data)
 			% data->number_of_philos];
 		i++;
 	}
+	return (1);
 }

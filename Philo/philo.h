@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 15:50:41 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 21:21:42 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 21:48:18 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ int					ft_atoi(const char *str);
 
 // init
 
-void				init_data(int argc, char **argv, t_data *data);
-void				init_philo(t_data *data);
+int					init_data(int argc, char **argv, t_data *data);
+int					init_philo(t_data *data);
 
 // time
 
@@ -75,7 +75,7 @@ int					philo_think(t_philo *philo);
 
 // philo
 
-void				philo(t_data *data);
+int					philo(t_data *data);
 
 // printf
 
@@ -84,6 +84,6 @@ int					ft_print_philo(t_philo *philo, char *str);
 // free
 
 void				final_free(t_data *data);
-void				mid_free(t_data *data);
+int					mid_free(t_data *data);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 15:49:59 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 21:21:58 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 21:52:48 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	create_philos(t_data *data)
+int	create_philos(t_data *data)
 {
 	int	i;
 
@@ -24,10 +24,11 @@ void	create_philos(t_data *data)
 		{
 			printf("Problem with creating thread %d\n", i);
 			mid_free(data);
-			exit(1);
+			return (0);
 		}
 		i++;
 	}
+	return (1);
 }
 
 void	check_time_pt2(t_data *data, int i)
@@ -66,7 +67,7 @@ void	check_time(t_data *data)
 	}
 }
 
-void	join_philos(t_data *data)
+int	join_philos(t_data *data)
 {
 	int	i;
 
@@ -77,27 +78,30 @@ void	join_philos(t_data *data)
 		{
 			printf("Problem with waiting for thread %d\n", i);
 			mid_free(data);
-			exit(1);
+			return (0);
 		}
 		i++;
 	}
+	return (1);
 }
 
-void	philo(t_data *data)
+int	philo(t_data *data)
 {
 	int	i;
 
 	i = 0;
 	data->threads = malloc(sizeof(pthread_t) * data->number_of_philos);
 	if (data->threads == NULL)
-		mid_free(data);
+		return (mid_free(data));
 	if (data->number_of_philos <= 1)
 	{
 		data->philo->og_time = get_curr_time();
-		ft_print_philo(data->philo, "has taken a fork");
+		if (ft_print_philo(data->philo, "has taken a fork") == 0)
+			return (0);
 		ft_sleep(data->time_to_die);
-		ft_print_philo(data->philo, "has died");
-		return ;
+		if (ft_print_philo(data->philo, "has died") == 0)
+			return (0);
+		return (1);
 	}
 	i = -1;
 	while (++i < data->number_of_philos)
@@ -106,4 +110,5 @@ void	philo(t_data *data)
 	check_time(data);
 	join_philos(data);
 	free(data->threads);
+	return (1);
 }

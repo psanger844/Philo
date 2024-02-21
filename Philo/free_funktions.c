@@ -6,13 +6,13 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:51:58 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 20:47:17 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 21:50:25 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	mid_free(t_data *data)
+int	mid_free(t_data *data)
 {
 	int	i;
 
@@ -38,7 +38,7 @@ void	mid_free(t_data *data)
 	if (data)
 		free(data);
 	printf("someting went wrong (malloc / threads) \n");
-	exit(1);
+	return (0);
 }
 
 void	final_free(t_data *data)

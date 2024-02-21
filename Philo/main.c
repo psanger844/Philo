@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 21:17:58 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 21:19:01 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 21:49:52 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@ int	main(int argc, char **argv)
 	data = malloc(sizeof(t_data));
 	if (data == NULL)
 		return (1);
-	init_data(argc, argv, data);
-	init_philo(data);
-	philo(data);
+	if (init_data(argc, argv, data) == 0)
+		return (0);
+	if (init_philo(data) == 0)
+		return (0);
+	if (philo(data) == 0)
+		return (0);
 	final_free(data);
 	free(data);
 	return (0);
