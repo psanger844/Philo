@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 20:28:01 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 18:15:49 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 18:28:14 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 int	ft_print_philo(t_philo *philo, char *str)
 {
+	pthread_mutex_lock(&philo->data->death_lock);
 	if (philo->data->death == 0)
+	{
+		pthread_mutex_unlock(&philo->data->death_lock);
 		return (0);
+	}
 	pthread_mutex_lock(&philo->data->print);
 	if (philo->data->death == 1)
 		printf("%lu %d %s\n", get_time(philo->og_time), philo->id, str);
 	pthread_mutex_unlock(&philo->data->print);
+	pthread_mutex_unlock(&philo->data->death_lock);
 	return (1);
 }
 
@@ -43,8 +48,13 @@ int	nbr_meals(t_philo *philo)
 
 int	philo_eat(t_philo *philo)
 {
-	if (philo_death(philo) == 0)
+	pthread_mutex_lock(&philo->data->death_lock);
+	if (philo->data->death == 0)
+	{
+		pthread_mutex_unlock(&philo->data->death_lock);
 		return (0);
+	}
+	pthread_mutex_unlock(&philo->data->death_lock);
 	pthread_mutex_lock(philo->left_fork);
 	pthread_mutex_lock(philo->right_fork);
 	ft_print_philo(philo, "has taken a fork");
