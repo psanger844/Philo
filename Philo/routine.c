@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 20:28:01 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 18:28:14 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 19:00:39 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,9 @@ void	*routine(void *args)
 	philo = (t_philo *)args;
 	if (philo->id % 2 == 1)
 		usleep(100);
+	pthread_mutex_lock(&philo->data->og_time_lock);
 	philo->og_time = get_curr_time();
+	pthread_mutex_unlock(&philo->data->og_time_lock);
 	pthread_mutex_lock(&philo->data->time_last_meal_lock);
 	philo->time_last_meal = get_curr_time();
 	pthread_mutex_unlock(&philo->data->time_last_meal_lock);

@@ -6,7 +6,7 @@
 /*   By: psanger <psanger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 15:49:59 by psanger           #+#    #+#             */
-/*   Updated: 2024/02/21 18:51:43 by psanger          ###   ########.fr       */
+/*   Updated: 2024/02/21 19:01:01 by psanger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ void	check_time(t_data *data)
 	i = 0;
 	while (i < data->number_of_philos)
 	{
+		pthread_mutex_lock(&data->og_time_lock);
 		data->philo[i].og_time = get_curr_time();
+		pthread_mutex_unlock(&data->og_time_lock);
 		i++;
 	}
 	i = 0;
